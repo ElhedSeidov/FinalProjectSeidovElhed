@@ -9,10 +9,5 @@ namespace MarketApp.Data.Enums
         MilkProducts,
         Drinks,
         Alchohol
-
-
-
-
-
     }
 }
