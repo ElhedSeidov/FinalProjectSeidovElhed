@@ -13,10 +13,10 @@ namespace MarketApp.Services.Abstract
     public interface IMarketService
     {
         public List<Sales> GetSales();
-        public int AddSales(decimal payment, Categories category, SalesItem salesItem, DateOnly date);
+        public int AddSales(DateTime date);
         
-        public int ReturnProductFromSale(string name, decimal pricePerProduct, Categories category, int amount);
-        public int ReturnSale();
+        public int ReturnProductFromSale(int productid, int prodamount);
+        public int ReturnWholeSale(int saleid);
         public int GetBetweenDateOfSales(DateOnly startDate, DateOnly endDate); 
         public int GetByDateSales(DateOnly date);
         public int GetByPaymentSales(decimal payment);

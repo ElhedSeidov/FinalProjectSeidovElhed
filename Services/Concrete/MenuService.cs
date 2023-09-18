@@ -1,4 +1,5 @@
-﻿using MarketApp.Data.Enums;
+﻿using ConsoleTables;
+using MarketApp.Data.Enums;
 using MarketApp.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -73,12 +74,28 @@ namespace MarketApp.Services.Concrete
         {
             try
             {
+                Console.WriteLine("Enter meeting's date yyyy/MM/dd:");
+                var date = DateTime.ParseExact(Console.ReadLine()!, "yyyy/MM/dd", null);
+                int a = marketService.AddSales(date);
+                Console.WriteLine($"Sale with id {a} created ");
 
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
+        }
+
+        public static void ShowSales()
+        {
+            var table = new ConsoleTable("id","Payment","Categ","Date");
+
+            foreach (var sale in marketService.GetSales()) 
+            {
+                table.AddRow(sale.Id,sale.Payment,sale.Category,sale.Date);
+            }
+
+            table.Write();
         }
 
 

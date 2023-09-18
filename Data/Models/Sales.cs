@@ -20,8 +20,8 @@ namespace MarketApp.Data.Models
         
         public decimal Payment { get; set; }
         public Categories Category { get; set; }
-        public SalesItem SalesItem { get; set; } = null!;
-        public DateOnly Date { get; set; }
+        public List<SalesItem> SalesItems { get; set; } = new();
+        public DateTime Date { get; set; }
 
 
     }

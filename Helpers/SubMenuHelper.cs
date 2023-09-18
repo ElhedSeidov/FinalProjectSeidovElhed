@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarketApp.Services.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace MarketApp.Helpers
 
             do
             {
-                Console.WriteLine("1.");
+                Console.WriteLine("1 Add Product");
                 Console.WriteLine("2.");
                 Console.WriteLine("3.");
 
@@ -30,7 +31,7 @@ namespace MarketApp.Helpers
                 switch (selectedOption)
                 {
                     case 1:
-
+                        MenuService.AddNewProduct();
                         break;
                     case 2:
 
@@ -53,7 +54,7 @@ namespace MarketApp.Helpers
 
             do
             {
-                Console.WriteLine("1. ");
+                Console.WriteLine("1.Add Sale Item ");
                 Console.WriteLine("2. ");
                 Console.WriteLine("3. ");
 
@@ -69,7 +70,7 @@ namespace MarketApp.Helpers
                 switch (selectedOption)
                 {
                     case 1:
-
+                        MenuService.AddSales();
                         break;
                     case 2:
 
