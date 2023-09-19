@@ -96,7 +96,7 @@ namespace MarketApp.Services.Concrete
             {
                 Console.WriteLine("1. Add Product with and amount of it");
                 Console.WriteLine("2. Create Sale");
-                Console.WriteLine("0. Exit  ");
+                Console.WriteLine("0. Exit and abort sale creating");
                 Console.WriteLine("----------------------------");
                 Console.WriteLine("Please, select an option:");
 
@@ -140,32 +140,38 @@ namespace MarketApp.Services.Concrete
                         }
 
 
-
+                        
                         
                         var prod = products.SingleOrDefault(x => x.Id == prodid);
                         AddSalesItem(count, prod, out SalesItem salasitemout);
-                        
-                        sale.SalesItems.Add(salasitemout);
 
+                        prod.Amount = prod.Amount - count;
+                        sale.SalesItems.Add(salasitemout);
+                        if (sales.Count > 0)
+                        {
+                            sales[sales.Count() - 1].Id = sales.Count() - 1;
+                        }
                         sale.SalesItems[sale.SalesItems.Count() - 1].Id = sale.SalesItems.Count() - 1;
                         Console.WriteLine($"The product with id {prodid}  in amount {salasitemout.Count}to saleitem with id {salasitemout.Id} which in sale with Id {sale.Id} ");
                         break;
 
                     case 2: 
                         sales.Add(sale);
+                        return sale.Id;
+                       
 
                         break;
                     case 0:
-
+                        //DeleteSale(sale.Id);
                         break;
                     default:
                         Console.WriteLine("No such option!");
                         break;
                 }
             } while (selectedOption != 0);
-            
-          
-            return sale.Id;
+
+
+            return 0;  
         }
 
         public int AddSalesItem(int count,Product product ,out SalesItem salesItemout)
@@ -198,7 +204,15 @@ namespace MarketApp.Services.Concrete
             var product = sales.FirstOrDefault(x => x.Id == saleid);
 
             if (product is null)
-                throw new Exception($"Patient with ID:{saleid} was not found!");
+                throw new Exception($"Sale with ID:{saleid} was not found!");
+
+            for (int i = 0;i <product.SalesItems.Count;i++)
+            {
+
+                products.FirstOrDefault(x => x.Id == i).Amount += product.SalesItems[i].Count;
+                products.Add(product.SalesItems[i].Product);
+                
+            }
 
             sales.Remove(product);
 
@@ -216,14 +230,25 @@ namespace MarketApp.Services.Concrete
         { 
             return 0;
         }
-        public int GetSalesById(int id)
-        {
-            return 0;
-        }
-
+        
         public int ReturnWholeSale(int saleid)
         { return 0; }
 
+        public List<SalesItem> GetSaleById(int id,out List<Sales> saless)
+        {
+
+            var salexist = sales.FirstOrDefault(x => x.Id == id);
+
+            if (salexist is null)
+                throw new Exception($"Sale with ID:{id} was not found!");
+
+            saless = sales.Where(x => x.Id == id).ToList();
+            
+            
+            var sale1 = sales.FirstOrDefault(x => x.Id == id);
+            return sale1.SalesItems;
+
+        }
 
     }
 

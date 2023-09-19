@@ -55,8 +55,8 @@ namespace MarketApp.Helpers
             do
             {
                 Console.WriteLine("1.Add Sale Item ");
-                Console.WriteLine("2. ");
-                Console.WriteLine("3. ");
+                Console.WriteLine("2.ShowSales ");
+                Console.WriteLine("3.ShowSales by Id ");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -73,10 +73,10 @@ namespace MarketApp.Helpers
                         MenuService.AddSales();
                         break;
                     case 2:
-
+                        MenuService.ShowSales();
                         break;
                     case 3:
-
+                        MenuService.ShowSaleById();
                         break;
                     case 0:
                         break;

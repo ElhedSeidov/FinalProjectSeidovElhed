@@ -1,5 +1,6 @@
 ﻿using ConsoleTables;
 using MarketApp.Data.Enums;
+using MarketApp.Data.Models;
 using MarketApp.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -88,17 +89,54 @@ namespace MarketApp.Services.Concrete
 
         public static void ShowSales()
         {
-            var table = new ConsoleTable("id","Payment","Categ","Date");
+            var table = new ConsoleTable("id","Payment","Date");
 
             foreach (var sale in marketService.GetSales()) 
             {
-                table.AddRow(sale.Id,sale.Payment,sale.Category,sale.Date);
+                table.AddRow(sale.Id,sale.Payment,sale.Date);
             }
 
             table.Write();
         }
 
+        public static void ShowSaleById ()
+        {
 
+            try
+            {
+                Console.WriteLine("Enter Sale ID to show salesitems ");
+                int id = int.Parse(Console.ReadLine()!);
+
+
+                var a = marketService.GetSaleById(id, out List<Sales> sale);
+
+                var table1 = new ConsoleTable("id", "Payment", "Date");
+                foreach (var sales in sale)
+                {
+                    table1.AddRow(sales.Id, sales.Payment, sales.Date);
+                }
+
+                table1.Write();
+                Console.WriteLine("=================================================");
+
+
+                Console.WriteLine("Show Sale Items :");
+
+                var table2 = new ConsoleTable("id", "ProdName", "Count");
+
+                foreach (var saleitem in a)
+                {
+                    table2.AddRow(saleitem.Id, saleitem.Product.Name, saleitem.Count);
+                }
+
+                table2.Write();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
 
     }
 
