@@ -1,13 +1,16 @@
 ﻿using MarketApp.Data.Enums;
 using MarketApp.Data.Models;
 using MarketApp.Services.Abstract;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MarketApp.Services.Concrete
 {
@@ -25,6 +28,8 @@ namespace MarketApp.Services.Concrete
                 throw new Exception("Name can't be empty!");
             if (pricePerProduct < 0)
                 throw new Exception("Price per product can't be less than 0 !");
+            if (!Enum.IsDefined(typeof(Categories), category) )
+                throw new Exception("Please enter right value for category");
             if (amount <= 0)
                 throw new Exception("Amount can't be lesser than one");
             var product = new Product
@@ -39,10 +44,39 @@ namespace MarketApp.Services.Concrete
 
             return product.Id;
         }
-        public int UpdateProduct(int id)
-        {
+        public int UpdateProduct(int id,string name, decimal pricePerProduct, Categories category, int amount)
+        {   
+            
+            
+            var prodex = products.FirstOrDefault(x => x.Id == id);
+            if (prodex == null)
+                throw new Exception($"Product with ID:{id} was not found!");
+
+
+            if (string.IsNullOrWhiteSpace(name))
+                throw new Exception("Name can't be empty!");
+            if (pricePerProduct < 0)
+                throw new Exception("Price per product can't be less than 0 !");
+            if (!Enum.IsDefined(typeof(Categories), category))
+                throw new Exception("Please enter right value for category");
+            if (amount <= 0)
+                throw new Exception("Amount can't be lesser than one");
+            
+
+            prodex.Name = name;
+            prodex.PricePerProduct = pricePerProduct;  
+            prodex.Category = category;
+            prodex.Amount = amount;
+        
+
+
+
+
+
+
+
             return id;
-        }
+            }
         public int DeleteProduct(int id)
         {
             if (id < 0)
@@ -88,15 +122,13 @@ namespace MarketApp.Services.Concrete
             Sales sale = new Sales
             {
                 Date = date,
-
             };
 
             do
             {
-                Console.WriteLine(" 1.Add Product with and amount of it");
+                Console.WriteLine("1.Add Product with and amount of it");
                 Console.WriteLine($"2.Create Sale with ID {sale.Id}");
-                Console.WriteLine($"3.Abort Sale Creating of Sale with ID {sale.Id} ");
-                Console.WriteLine(" 0. Exit");
+                Console.WriteLine($"0.Exit without creating sale {sale.Id} ");
                 Console.WriteLine("----------------------------");
                 Console.WriteLine("Please, select an option:");
                 while (!int.TryParse(Console.ReadLine(), out selectedOption))
@@ -121,10 +153,9 @@ namespace MarketApp.Services.Concrete
                             sale.Payment = sale.Payment + sale.SalesItems[i].Count * sale.SalesItems[i].Product.PricePerProduct;
                         }
                         sales.Add(sale);
+                        Console.WriteLine($"Sale with ID {sale.Id}  ");
                         break;
-                    case 3:
-                        DeleteSale(sale.Id);
-                        break;
+                   
                     case 0:                      
                         break;
                     default:
@@ -135,19 +166,7 @@ namespace MarketApp.Services.Concrete
             return sale.Id;  
         }
 
-        public int AddSalesItem(int count,Product product ,out SalesItem salesItemout)
-        {
-            var saleitem = new SalesItem
-            {
-                Product = product,
-                Count = count
-                
-            };
-            salesItemout = saleitem;
-
-            return saleitem.Id;
        
-        }
        
         public List<Sales> GetSales()
         {
@@ -287,6 +306,20 @@ namespace MarketApp.Services.Concrete
             sale.SalesItems[sale.SalesItems.Count() - 1].Id = sale.SalesItems.Count() - 1;
 
             return salasitemout.Id;
+        }
+
+        public int AddSalesItem(int count, Product product, out SalesItem salesItemout)
+        {
+            var saleitem = new SalesItem
+            {
+                Product = product,
+                Count = count
+
+            };
+            salesItemout = saleitem;
+
+            return saleitem.Id;
+
         }
     }
 

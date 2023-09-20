@@ -21,7 +21,12 @@ namespace MarketApp.Services.Concrete
                 string fullname = Console.ReadLine()!;
 
                 Console.WriteLine("Enter Product Category:");
-                Categories category = (Categories)Enum.Parse(typeof(Categories), Console.ReadLine()!);
+                string a= Console.ReadLine()!;
+                if (int.TryParse(a, out _))
+                {
+                    throw new Exception("Enter Right Value");
+                }
+                Categories category = (Categories)Enum.Parse(typeof(Categories), a);
 
                 Console.WriteLine("Enter Product Price:");
                 decimal productPrice = decimal.Parse(Console.ReadLine()!);
@@ -38,26 +43,81 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+
+        public static void UpdateProduct()
+        {
+            try
+            {
+                Console.WriteLine("Enter Product ID:");
+                int id = int.Parse(Console.ReadLine()!);
+
+
+                Console.WriteLine("Enter product  name:");
+                string fullname = Console.ReadLine()!;
+
+                Console.WriteLine("Enter Product Category:");
+                string a = Console.ReadLine()!;
+                if (int.TryParse(a, out _))
+                {
+                    throw new Exception("Enter Right Value");
+                }
+                Categories category = (Categories)Enum.Parse(typeof(Categories), a);
+
+                Console.WriteLine("Enter Product Price:");
+                decimal productPrice = decimal.Parse(Console.ReadLine()!);
+
+                Console.WriteLine("Enter Product Amount:");
+                int amount = int.Parse(Console.ReadLine()!);
+
+                int idupd = marketService.UpdateProduct(id, fullname, productPrice, category, amount);
+
+                Console.WriteLine($"Product with ID:{idupd} was updated!");
+            }
+
+            catch (Exception ex)
+
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }     
+        
+        }
         public static void ShowProductByCategory()
         {
             try
             {
-               
+                Console.WriteLine("Enter Product Category:");
+                Categories category = (Categories)Enum.Parse(typeof(Categories), Console.ReadLine()!);
+                
+
+                var table = new ConsoleTable("Category","ID","Name","pricePerProducts","Amounts");
+
+                foreach (var product in marketService.ShowProductByCategory(category)) 
+                {
+                    table.AddRow(product.Category,product.Id,product.Name,product.PricePerProduct,product.Amount);
+                }
+
+                table.Write();
+
             }
             catch (Exception ex)
             {
-               
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
         public static void ShowProductByPrice()
         {
             try
             {
+                Console.WriteLine("Enter Product minimal Price:");
+                decimal minPrice = decimal.Parse(Console.ReadLine()!);
+                Console.WriteLine("Enter Product maximal Price:");
+                decimal maxPrice = decimal.Parse(Console.ReadLine()!);
 
+                marketService.ShowProductsByPrice(minPrice,maxPrice);   
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
         public static void ShowProductByName()
@@ -94,7 +154,7 @@ namespace MarketApp.Services.Concrete
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
@@ -144,8 +204,35 @@ namespace MarketApp.Services.Concrete
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Error: {ex.Message}");
             }
+
+        }
+
+        public static void ReturnProductFromSale()
+        {
+            try
+            {
+                Console.WriteLine("Enter Sale ID  ");
+                int id = int.Parse(Console.ReadLine()!);
+
+                Console.WriteLine("Enter Produc ID  ");
+                int prodid = int.Parse(Console.ReadLine()!);
+
+                Console.WriteLine("Enter Produc ID  ");
+                int prodamount = int.Parse(Console.ReadLine()!);
+
+                marketService.ReturnProductFromSale(id, prodid, prodamount);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+
+
+
+
 
         }
 

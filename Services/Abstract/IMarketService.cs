@@ -24,7 +24,7 @@ namespace MarketApp.Services.Abstract
         public int AddNewProduct(string name, decimal pricePerProduct, Categories category, int amount);
        
         
-        public int UpdateProduct(int id);
+        public int UpdateProduct(int id, string name, decimal pricePerProduct, Categories category, int amount);
         public List<Product> ShowProductByCategory(Categories category);
         public List<Product> ShowProductsByPrice(decimal minprice ,decimal maxprice);
         public List<Product> ShowProductByName(string name);

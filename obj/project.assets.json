@@ -40,19 +40,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HP\\.nuget\\packages\\": {}
+    "C:\\Users\\alhadss\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP\\OneDrive\\Desktop\\FinalProjectSeidovElhed\\MarketApp.csproj",
+      "projectUniqueName": "C:\\Users\\alhadss\\Desktop\\FinalProjectSeidovElhed\\MarketApp.csproj",
       "projectName": "MarketApp",
-      "projectPath": "C:\\Users\\HP\\OneDrive\\Desktop\\FinalProjectSeidovElhed\\MarketApp.csproj",
-      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP\\OneDrive\\Desktop\\FinalProjectSeidovElhed\\obj\\",
+      "projectPath": "C:\\Users\\alhadss\\Desktop\\FinalProjectSeidovElhed\\MarketApp.csproj",
+      "packagesPath": "C:\\Users\\alhadss\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\alhadss\\Desktop\\FinalProjectSeidovElhed\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\alhadss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -99,7 +104,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

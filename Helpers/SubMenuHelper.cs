@@ -16,8 +16,8 @@ namespace MarketApp.Helpers
             do
             {
                 Console.WriteLine("1 Add Product");
-                Console.WriteLine("2. Show Products");
-                Console.WriteLine("3.");
+                Console.WriteLine("2.Show Products");
+                Console.WriteLine("3.Show products by caegory");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -37,6 +37,9 @@ namespace MarketApp.Helpers
                         MenuService.ShowProducts();
                         break;
                     case 3:
+                        MenuService.ShowProductByCategory();
+                        break;
+                    case 4:
 
                         break;
                     case 0:
@@ -57,6 +60,7 @@ namespace MarketApp.Helpers
                 Console.WriteLine("1.Add Sale Item ");
                 Console.WriteLine("2.ShowSales ");
                 Console.WriteLine("3.ShowSales by Id ");
+                Console.WriteLine("3.Return Product From Sale");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -77,6 +81,9 @@ namespace MarketApp.Helpers
                         break;
                     case 3:
                         MenuService.ShowSaleById();
+                        break;
+                    case 4:
+                        MenuService.ReturnProductFromSale();
                         break;
                     case 0:
                         break;
