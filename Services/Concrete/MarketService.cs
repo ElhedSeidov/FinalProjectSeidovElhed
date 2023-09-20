@@ -24,7 +24,7 @@ namespace MarketApp.Services.Concrete
             if (string.IsNullOrWhiteSpace(name))
                 throw new Exception("Name can't be empty!");
             if (pricePerProduct < 0)
-                throw new Exception("Price per product can't be less than 0!");
+                throw new Exception("Price per product can't be less than 0 !");
             if (amount <= 0)
                 throw new Exception("Amount can't be lesser than one");
             var product = new Product
@@ -57,7 +57,7 @@ namespace MarketApp.Services.Concrete
 
             return id;
         }
-        public List<Product> ShowProducts()
+        public List<Product> GetProducts()
         {
             return products;
         }
@@ -82,96 +82,57 @@ namespace MarketApp.Services.Concrete
 
         public int AddSales(DateTime date)
         {
+            int selectedOption;
 
 
-            var sale = new Sales
+            Sales sale = new Sales
             {
+                Date = date,
 
-                Date = date
             };
 
-
-            int selectedOption;
             do
             {
-                Console.WriteLine("1. Add Product with and amount of it");
-                Console.WriteLine("2. Create Sale");
-                Console.WriteLine("0. Exit and abort sale creating");
+                Console.WriteLine(" 1.Add Product with and amount of it");
+                Console.WriteLine($"2.Create Sale with ID {sale.Id}");
+                Console.WriteLine($"3.Abort Sale Creating of Sale with ID {sale.Id} ");
+                Console.WriteLine(" 0. Exit");
                 Console.WriteLine("----------------------------");
                 Console.WriteLine("Please, select an option:");
-
                 while (!int.TryParse(Console.ReadLine(), out selectedOption))
                 {
                     Console.WriteLine("Please enter valid option:");
-                };
+                }
 
                 switch (selectedOption)
                 {
+
                     case 1:
-                        Console.WriteLine("Enter Product id");
-                        string a = Console.ReadLine()!;
-                        if (string.IsNullOrEmpty(a))
-                        {
-                            throw new Exception("The Prod Id field is empty");
-                        }
-
-                        int prodid = int.Parse(a);
-
-                        var prodany = products.Any(x => x.Id == prodid);
-                        if (prodany == false)
-                        {
-                            throw new Exception($"The Prod with{prodid} does not exist ");
-                        }
-                        Console.WriteLine("Enter Product amount");
-                        string b = Console.ReadLine()!;
-                        if (string.IsNullOrEmpty(b))
-                        {
-                            throw new Exception("The Prod Count field is empty");
-                        }
-                        int count = int.Parse(b);
-                        if(count == 0)
-                        {
-                            throw new Exception("Enter amount which is bigger than 0");
-                        }
-                        var prod0 = products.SingleOrDefault(x => x.Id == prodid);
-                        if (prod0.Amount < count)
-                        {
-                            throw new Exception($"The Product with {prod0.Id} does not have {count} amount ,the amount which this has is {prod0.Amount}  ");
-                        }
-
-
-                        
-                        
-                        var prod = products.SingleOrDefault(x => x.Id == prodid);
-                        AddSalesItem(count, prod, out SalesItem salasitemout);
-
-                        prod.Amount = prod.Amount - count;
-                        sale.SalesItems.Add(salasitemout);
-                        if (sales.Count > 0)
-                        {
-                            sales[sales.Count() - 1].Id = sales.Count() - 1;
-                        }
-                        sale.SalesItems[sale.SalesItems.Count() - 1].Id = sale.SalesItems.Count() - 1;
-                        Console.WriteLine($"The product with id {prodid}  in amount {salasitemout.Count}to saleitem with id {salasitemout.Id} which in sale with Id {sale.Id} ");
+                        AddSalesHelper1(sale);
                         break;
-
-                    case 2: 
+                    case 2:
+                        if (sale.SalesItems.Count == 0)
+                        {
+                            
+                            throw new Exception("You could not create empty sale");
+                        }
+                        for (int i = 0; i < sale.SalesItems.Count; i++)
+                        {
+                            sale.Payment = sale.Payment + sale.SalesItems[i].Count * sale.SalesItems[i].Product.PricePerProduct;
+                        }
                         sales.Add(sale);
-                        return sale.Id;
-                       
-
                         break;
-                    case 0:
-                        //DeleteSale(sale.Id);
+                    case 3:
+                        DeleteSale(sale.Id);
+                        break;
+                    case 0:                      
                         break;
                     default:
                         Console.WriteLine("No such option!");
                         break;
                 }
             } while (selectedOption != 0);
-
-
-            return 0;  
+            return sale.Id;  
         }
 
         public int AddSalesItem(int count,Product product ,out SalesItem salesItemout)
@@ -192,29 +153,58 @@ namespace MarketApp.Services.Concrete
         {
             return sales;
         }
-        public int ReturnProductFromSale(int prodid,int prodamount)
+        public int ReturnProductFromSale(int saleid,int productid, int prodamount)
         { 
+             if (string.IsNullOrEmpty(saleid.ToString()))       
+                throw new Exception("The Sale Id field is empty");        
+            if (saleid < 0)
+                throw new Exception("Id can't be less than 0!");   
+            var saleexist= sales.FirstOrDefault(x => x.Id == saleid);
+            if (saleexist is null)
+                throw new Exception($"Sale with ID:{saleid} was not found!");
+            if (string.IsNullOrEmpty(productid.ToString()))
+                throw new Exception("The Product Id field is empty");
+            if (productid < 0)
+                throw new Exception("Id can't be less than 0!");
+
+
+            var productamountadd = products.FirstOrDefault(x => x.Id == productid).Amount; 
+            var productexist =saleexist.SalesItems.FirstOrDefault(x => x.Product.Id==productid);
+            var productexistcount = productexist.Count;
+            productexistcount = productexistcount - prodamount;
+            productamountadd = productamountadd + prodamount;
+            if (productexistcount == 0)
+            {
+                saleexist.SalesItems.Remove(productexist);
+            }
+
+
+
+
+
+
+
+
+
             return 0;
         }
         public int DeleteSale(int saleid)
         {
+            if (string.IsNullOrEmpty(saleid.ToString()))
+            {
+                throw new Exception("The Sale Id field is empty");
+            }
             if (saleid < 0)
                 throw new Exception("Id can't be less than 0!");
-
-            var product = sales.FirstOrDefault(x => x.Id == saleid);
-
-            if (product is null)
+            var saleexist = sales.FirstOrDefault(x => x.Id == saleid);
+            if (saleexist is null)
                 throw new Exception($"Sale with ID:{saleid} was not found!");
-
-            for (int i = 0;i <product.SalesItems.Count;i++)
+            for (int i = 0;i <saleexist.SalesItems.Count;i++)
             {
-
-                products.FirstOrDefault(x => x.Id == i).Amount += product.SalesItems[i].Count;
-                products.Add(product.SalesItems[i].Product);
-                
+                products.FirstOrDefault(x => x.Id == i).Amount += saleexist.SalesItems[i].Count;
+                products.Add(saleexist.SalesItems[i].Product);               
             }
-
-            sales.Remove(product);
+            sales.Remove(saleexist);
 
             return saleid;
         }
@@ -231,25 +221,73 @@ namespace MarketApp.Services.Concrete
             return 0;
         }
         
-        public int ReturnWholeSale(int saleid)
-        { return 0; }
+     
 
         public List<SalesItem> GetSaleById(int id,out List<Sales> saless)
         {
-
             var salexist = sales.FirstOrDefault(x => x.Id == id);
-
             if (salexist is null)
                 throw new Exception($"Sale with ID:{id} was not found!");
-
-            saless = sales.Where(x => x.Id == id).ToList();
-            
-            
+            saless = sales.Where(x => x.Id == id).ToList();         
             var sale1 = sales.FirstOrDefault(x => x.Id == id);
             return sale1.SalesItems;
-
         }
 
+        public void AddSalesHelper1(Sales sales)
+        {
+            try
+            {
+                Console.WriteLine("Enter the product id which you want to add");
+                int productid = int.Parse(Console.ReadLine()!);
+                Console.WriteLine("Enter the product count you want to add");
+                int productcount = int.Parse(Console.ReadLine()!);
+
+                int a = AddSalesHelper2(sales, productid, productcount);
+                Console.WriteLine($"The Product with {productid} which's count is {productcount} , to saleitem with ID {a}  which in sale {sales.Id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }              
+        }
+
+
+        public int AddSalesHelper2(Sales sale, int productid, int productamount)
+        {
+            var prodany = products.Any(x => x.Id == productid);
+            if (prodany == false)
+            {
+                sale.Id = sale.Id - 1;
+                throw new Exception($"The Prod with{productid} does not exist ");
+            }                        
+            if (productamount <= 0)
+            {
+                sale.Id = sale.Id - 1;
+                throw new Exception("Enter amount which is bigger than 0");
+            }
+            var prod0 = products.SingleOrDefault(x => x.Id == productid);
+            if (prod0.Amount < productamount)
+            {
+                sale.Id = sale.Id - 1;
+                throw new Exception($"The Product with {prod0.Id} does not have {productamount} amount ,the amount which this has is {prod0.Amount}  ");
+            }
+            var prod = products.SingleOrDefault(x => x.Id == productid);
+            AddSalesItem(productamount, prod, out SalesItem salasitemout);
+
+            prod.Amount = prod.Amount - productamount;
+            if (sale.SalesItems.Any(x => x.Product.Id == productid) == true)
+            {
+                sale.SalesItems.FirstOrDefault(x => x.Product.Id == productid).Count += productamount;
+            }
+            else
+            {
+                sale.SalesItems.Add(salasitemout);
+            }
+
+            sale.SalesItems[sale.SalesItems.Count() - 1].Id = sale.SalesItems.Count() - 1;
+
+            return salasitemout.Id;
+        }
     }
 
 

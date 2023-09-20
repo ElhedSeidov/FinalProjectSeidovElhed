@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ODna8Uy3gqXtso3Zg9anZXKcmlvteORlTmYw3tCZG2WJI/0tjUI0cRSNe9QA5UZdXSuZ9NqS34Yb1nDNFVSwOA==",
+  "dgSpecHash": "0XmbtshYXAhXUOYQz40OB3Jv+BCYteKmgGkMXzhvXa5MhXpe8u1uuPZyPSEzag4hUS3isGfDy8cwEgI3xFsvTQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alhadss\\Desktop\\FinalProjectSeidovElhed\\MarketApp.csproj",
+  "projectFilePath": "C:\\Users\\HP\\OneDrive\\Desktop\\FinalProjectSeidovElhed\\MarketApp.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\alhadss\\.nuget\\packages\\consoletables\\2.5.0\\consoletables.2.5.0.nupkg.sha512"
+    "C:\\Users\\HP\\.nuget\\packages\\consoletables\\2.5.0\\consoletables.2.5.0.nupkg.sha512"
   ],
   "logs": []
 }

@@ -15,7 +15,7 @@ namespace MarketApp.Services.Abstract
         public List<Sales> GetSales();
         public int AddSales(DateTime date);
         
-        public int ReturnProductFromSale(int productid, int prodamount);
+        public int ReturnProductFromSale(int saleid,int productid, int prodamount);
         public int DeleteSale(int saleid);
         public int GetBetweenDateOfSales(DateOnly startDate, DateOnly endDate); 
         public int GetByDateSales(DateOnly date);
@@ -28,6 +28,8 @@ namespace MarketApp.Services.Abstract
         public List<Product> ShowProductByCategory(Categories category);
         public List<Product> ShowProductsByPrice(decimal minprice ,decimal maxprice);
         public List<Product> ShowProductByName(string name);
+
+        public List<Product> GetProducts();
 
         public List<SalesItem> GetSaleById(int id, out List<Sales> sale);
 

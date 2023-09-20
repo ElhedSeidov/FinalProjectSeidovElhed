@@ -71,6 +71,17 @@ namespace MarketApp.Services.Concrete
 
             }
         }
+        public static void ShowProducts()
+        {
+            var table = new ConsoleTable("id", "Name","price Per Product ","Category","Amount");
+
+            foreach (var product in marketService.GetProducts())
+            {
+                table.AddRow(product.Id,product.Name,product.PricePerProduct,product.Category,product.Amount);
+            }
+
+            table.Write();
+        }
         public static void AddSales()
         {
             try
@@ -78,7 +89,7 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine("Enter meeting's date yyyy/MM/dd:");
                 var date = DateTime.ParseExact(Console.ReadLine()!, "yyyy/MM/dd", null);
                 int a = marketService.AddSales(date);
-                Console.WriteLine($"Sale with id {a} created ");
+                
 
             }
             catch (Exception ex)
