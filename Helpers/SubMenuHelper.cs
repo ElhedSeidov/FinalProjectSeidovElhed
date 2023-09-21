@@ -16,8 +16,11 @@ namespace MarketApp.Helpers
             do
             {
                 Console.WriteLine("1 Add Product");
-                Console.WriteLine("2.Show Products");
-                Console.WriteLine("3.Show products by caegory");
+                Console.WriteLine("2.Update Product");
+                Console.WriteLine("3.Delete product ");
+                Console.WriteLine("4.Show Products");
+                Console.WriteLine("5.Show products by caegory");
+                Console.WriteLine("5.Show products by name");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -33,14 +36,23 @@ namespace MarketApp.Helpers
                     case 1:
                         MenuService.AddNewProduct();
                         break;
-                    case 2:
-                        MenuService.ShowProducts();
+                    case 2: 
+                        MenuService.UpdateProduct();
                         break;
                     case 3:
-                        MenuService.ShowProductByCategory();
+                        MenuService.DeleteProduct();                        
                         break;
                     case 4:
-
+                        MenuService.ShowProducts();
+                        break;
+                    case 5:
+                        MenuService.ShowProductByCategory();
+                        break;
+                    case 6:
+                       MenuService.ShowProductByName();
+                        break;
+                    case 7:
+                        MenuService.ShowProductByPrice();
                         break;
                     case 0:
                         break;

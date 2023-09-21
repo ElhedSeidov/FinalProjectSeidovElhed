@@ -28,10 +28,11 @@ namespace MarketApp.Services.Abstract
         public List<Product> ShowProductByCategory(Categories category);
         public List<Product> ShowProductsByPrice(decimal minprice ,decimal maxprice);
         public List<Product> ShowProductByName(string name);
-
+        public int DeleteProduct(int id);   
         public List<Product> GetProducts();
 
         public List<SalesItem> GetSaleById(int id, out List<Sales> sale);
+         
 
 
 

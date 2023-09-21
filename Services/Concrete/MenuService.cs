@@ -5,6 +5,7 @@ using MarketApp.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -78,16 +79,36 @@ namespace MarketApp.Services.Concrete
 
             {
                 Console.WriteLine($"Error: {ex.Message}");
-            }     
-        
+            }
+
         }
+        public static void DeleteProduct()
+        {
+            try
+            {
+                Console.WriteLine("Enter Product ID you want to delete:");
+                int id = int.Parse(Console.ReadLine()!);
+
+                int a = marketService.DeleteProduct(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+        }
+        
         public static void ShowProductByCategory()
         {
             try
             {
                 Console.WriteLine("Enter Product Category:");
-                Categories category = (Categories)Enum.Parse(typeof(Categories), Console.ReadLine()!);
-                
+                string a = Console.ReadLine()!;
+                if (int.TryParse(a, out _))
+                {
+                    throw new Exception("Enter Right Value");
+                }
+                Categories category = (Categories)Enum.Parse(typeof(Categories), a);
 
                 var table = new ConsoleTable("Category","ID","Name","pricePerProducts","Amounts");
 
@@ -124,14 +145,27 @@ namespace MarketApp.Services.Concrete
         {
             try
             {
+                string str = Console.ReadLine()!;
+                var table = new ConsoleTable("Name","ID", "price Per Product ", "Category", "Amount");
+
+                foreach (var product in marketService.ShowProductByName(str))
+                {
+                    table.AddRow( product.Id,product.Name, product.PricePerProduct, product.Category, product.Amount);
+                }
+
+                table.Write();
+
 
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
-        public static void ShowProducts()
+
+     
+
+            public static void ShowProducts()
         {
             var table = new ConsoleTable("id", "Name","price Per Product ","Category","Amount");
 
@@ -139,17 +173,16 @@ namespace MarketApp.Services.Concrete
             {
                 table.AddRow(product.Id,product.Name,product.PricePerProduct,product.Category,product.Amount);
             }
-
             table.Write();
         }
         public static void AddSales()
         {
             try
             {
-                Console.WriteLine("Enter meeting's date yyyy/MM/dd:");
+                Console.WriteLine("Enter  sale's date yyyy/MM/dd:");
                 var date = DateTime.ParseExact(Console.ReadLine()!, "yyyy/MM/dd", null);
-                int a = marketService.AddSales(date);
-                
+                int a = marketService.AddSales(date); 
+               
 
             }
             catch (Exception ex)
