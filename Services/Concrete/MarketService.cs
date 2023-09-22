@@ -14,8 +14,6 @@ using System.Xml.Linq;
 
 namespace MarketApp.Services.Concrete
 {
-
-
     public class MarketService : IMarketService
     {
         private List<Product> products = new();
@@ -45,9 +43,7 @@ namespace MarketApp.Services.Concrete
             return product.Id;
         }
         public int UpdateProduct(int id,string name, decimal pricePerProduct, Categories category, int amount)
-        {   
-            
-            
+        {           
             var prodex = products.FirstOrDefault(x => x.Id == id);
             if (prodex is null)
                 throw new Exception($"Product with ID:{id} was not found!");
@@ -62,7 +58,6 @@ namespace MarketApp.Services.Concrete
             if (amount <= 0)
                 throw new Exception("Amount can't be lesser than one");
             
-
             prodex.Name = name;
             prodex.PricePerProduct = pricePerProduct;  
             prodex.Category = category;
@@ -80,7 +75,6 @@ namespace MarketApp.Services.Concrete
             if (product is null)
                 throw new Exception($"Patient with ID:{id} was not found!");
 
-
             products.Remove(product);
 
             return id;
@@ -89,24 +83,20 @@ namespace MarketApp.Services.Concrete
         {
             return products;
         }
-
         public List<Product> ShowProductByCategory(Categories category)
         {
             var productcategory = products.Where(x => x.Category == category);
             return productcategory.ToList();
         }
-
         public List<Product> ShowProductsByPrice(decimal minprice, decimal maxprice)        
         {
             if(minprice>maxprice)
                 throw new Exception($"Minimal price cannot be more than max price");
 
-
             var productcategory = products.Where(x => x.PricePerProduct >= minprice && x.PricePerProduct <= maxprice);
             
             return productcategory.ToList();
         }
-
         public List<Product> ShowProductByName(string name)
         {
             var productname = products.Where(x=>x.Name.Contains(name));
@@ -119,30 +109,23 @@ namespace MarketApp.Services.Concrete
 
             return productname.ToList();
         }
-
         public int AddSales(DateTime date)
         {
             int selectedOption;
             TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
             Sales sale = new Sales
-            {
-                
+            {               
                 Date = date + currentTime
             };
-
-
             if( sales.Count==0)
             {
                 sale.Id = 0;
             }
-            if (sales.Count >= 1)
+            else if (sales.Count >= 1)
             {
                 sale.Id = sales[sales.Count - 1].Id + 1;
-            }
-             
-             bool saleidregulator = true;
-            if(saleidregulator)
+            }     
             do
             {
                 Console.WriteLine("1.Add Product with and amount of it");
@@ -154,15 +137,12 @@ namespace MarketApp.Services.Concrete
                 {
                     Console.WriteLine("Please enter valid option:");
                 }
-
                 switch (selectedOption)
                 {
-
                     case 1:
                         AddSalesHelper1(sale);
                         break;
-                    case 2:
-                      
+                    case 2:                     
                         if (sale.SalesItems.Count == 0 )
                         {                           
                             throw new Exception("You could not create empty sale");
@@ -178,8 +158,7 @@ namespace MarketApp.Services.Concrete
                             
                         sales.Add(sale);
                         Console.WriteLine($"Sale with ID {sale.Id}  created");
-                        break;
-                   
+                        break;                  
                     case 0:                      
                         break;
                     default:
@@ -189,9 +168,6 @@ namespace MarketApp.Services.Concrete
             } while (selectedOption != 0);
             return sale.Id;  
         }
-
-       
-       
         public List<Sales> GetSales()
         {
             return sales;
@@ -210,7 +186,7 @@ namespace MarketApp.Services.Concrete
             if (productid < 0)
                 throw new Exception("Id can't be less than 0!");
             if (saleexist.SalesItems.FirstOrDefault(x=>x.Product.Id==productid) is null)
-                throw new Exception($"There are no SaleItem witch contain product with ID {productid} ");
+                throw new Exception($"There are no SaleItem which contain product with ID {productid} ");
             if (prodamount>saleexist.SalesItems.FirstOrDefault(x=>x.Product.Id==productid).Count )
                 throw new Exception($"The product count is too high , enter count which is less than {saleexist.SalesItems.FirstOrDefault(x => x.Product.Id == productid).Count} ");
 
@@ -219,7 +195,9 @@ namespace MarketApp.Services.Concrete
 
             saleitemid.Count = saleitemid.Count - prodamount;
             products.FirstOrDefault(x => x.Id == productid).Amount = products.FirstOrDefault(x => x.Id == productid).Amount + prodamount;
-            if(saleitemid.Count ==0)
+
+            salewithneededid.Payment = salewithneededid.Payment - saleitemid.Product.PricePerProduct * prodamount;
+            if (saleitemid.Count ==0)
             {
                 salewithneededid.SalesItems.Remove(saleitemid);
                 return productid;
@@ -227,8 +205,7 @@ namespace MarketApp.Services.Concrete
             else
             {
                 return productid;
-            }
-            
+            }       
         }
         public int DeleteSale(int saleid)
         {
@@ -244,40 +221,36 @@ namespace MarketApp.Services.Concrete
 
             var saleexist=sales.FirstOrDefault(x => x.Id == saleid);
 
-
             products.ForEach(products => { products.Amount = products.Amount + saleexist.SalesItems.FirstOrDefault(x => x.Product.Id == products.Id).Count; });
            
             sales.Remove(saleexist); 
 
             return saleid;
-        }
-      
-        public int GetByDateSales(DateOnly date)
-        {
-            return 0;
-        }
+        }    
         public List<Sales> GetByPaymentSales(decimal minprice, decimal maxprice)
         {
             if (minprice > maxprice)
                 throw new Exception($"Minimal price cannot be more than max price");
 
-
             var saleprice = sales.Where(x => x.Payment >= minprice && x.Payment <= maxprice);
-
             return saleprice.ToList();
         }
-
         public List<Sales> GetBetweenDateOfSales(DateTime startDate, DateTime endDate)
-        {
+        {     
             if (startDate > endDate)
                 throw new Exception("Mindate cannot me more than Maxdate");
-            var salesdates=sales.Where(x=>x.Date >= startDate && x.Date <= endDate).ToList(); 
+            var salesdates=sales.Where(x=>x.Date.Date >= startDate && x.Date.Date <= endDate).ToList(); 
             
             return salesdates;
         }
-
-
-
+        public List<Sales> GetSaleByDate(DateTime dateTime)
+        {
+            var datesalesexist = sales.FirstOrDefault(x => x.Date.Date == dateTime);
+            if (datesalesexist != null)
+                throw new Exception($"This date does not exist the min date is {sales.Min(x => x.Date)} the max date {sales.Max(x => x.Date)}  ");
+            var datesales =sales.Where(x => x.Date.Date == dateTime);
+            return datesales.ToList();
+        }
         public List<SalesItem> GetSaleById(int id,out List<Sales> saless)
         {
             var salexist = sales.FirstOrDefault(x => x.Id == id);
@@ -287,7 +260,6 @@ namespace MarketApp.Services.Concrete
             var sale1 = sales.FirstOrDefault(x => x.Id == id);
             return sale1.SalesItems;
         }
-
         public void AddSalesHelper1(Sales sales)
         {
             try
@@ -304,8 +276,6 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine(ex.Message);
             }              
         }
-
-
         public int AddSalesHelper2(Sales sale, int productid, int productamount)
         {
             var prodany = products.Any(x => x.Id == productid);
@@ -348,7 +318,4 @@ namespace MarketApp.Services.Concrete
             return saleitem.Id;
         }
     }
-
-
-
 }

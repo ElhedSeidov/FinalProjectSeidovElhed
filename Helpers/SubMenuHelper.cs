@@ -63,7 +63,6 @@ namespace MarketApp.Helpers
                 }
             } while (selectedOption != 0);
         }
-
         public static void DisplaySalesMenu()
         {
             int selectedOption;
@@ -75,7 +74,9 @@ namespace MarketApp.Helpers
                 Console.WriteLine("3.Return Product From Sale");
                 Console.WriteLine("4.ShowSales ");
                 Console.WriteLine("5.ShowSales by Id ");
-                Console.WriteLine("6.Show Sales Betwee Dates");
+                Console.WriteLine("6.Show Sale by Date");
+                Console.WriteLine("7.Show sale between Dates");
+                Console.WriteLine("8.Show Sales between Minimal Payment and Maximal");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -84,8 +85,7 @@ namespace MarketApp.Helpers
                 while (!int.TryParse(Console.ReadLine(), out selectedOption))
                 {
                     Console.WriteLine("Please enter valid option:");
-                }
-              
+                }             
                 switch (selectedOption)
                 {
                     case 1:
@@ -104,12 +104,14 @@ namespace MarketApp.Helpers
                         MenuService.ShowSaleById();
                         break;
                     case 6:
-                        MenuService.ShowBetweeMinDateandMaxDate();
+                        MenuService.ShowSaleByDate();
                         break;
                     case 7:
-
+                        MenuService.ShowBetweeMinDateandMaxDate();
                         break;
-                        
+                    case 8:
+                        MenuService.ShowAmongPaymentSales();
+                        break;            
                     case 0:
                         break;
                     default:
@@ -118,9 +120,5 @@ namespace MarketApp.Helpers
                 }
             } while (selectedOption != 0);
         }
-
-
     }
-
-   
 }

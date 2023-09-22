@@ -15,6 +15,7 @@ namespace MarketApp.Data.Models
         {
             Id = id;
             id++;
+
         }
 
         
