@@ -17,9 +17,9 @@ namespace MarketApp.Services.Abstract
         
         public int ReturnProductFromSale(int saleid,int productid, int prodamount);
         public int DeleteSale(int saleid);
-        public int GetBetweenDateOfSales(DateOnly startDate, DateOnly endDate); 
+        public List<Sales> GetBetweenDateOfSales(DateTime startDate, DateTime endDate); 
         public int GetByDateSales(DateOnly date);
-        public int GetByPaymentSales(decimal payment);
+        public List<Sales> GetByPaymentSales(decimal minprice,decimal maxprice);
        
         public int AddNewProduct(string name, decimal pricePerProduct, Categories category, int amount);
        

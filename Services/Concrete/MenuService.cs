@@ -23,6 +23,7 @@ namespace MarketApp.Services.Concrete
 
                 Console.WriteLine("Enter Product Category:");
                 string a= Console.ReadLine()!;
+
                 if (int.TryParse(a, out _))
                 {
                     throw new Exception("Enter Right Value");
@@ -36,7 +37,6 @@ namespace MarketApp.Services.Concrete
                 int amount = int.Parse(Console.ReadLine()!);
 
                 int id = marketService.AddNewProduct(fullname,productPrice,category ,amount);
-
                 Console.WriteLine($"Product with ID:{id} was created!");
             }
             catch (Exception ex)
@@ -44,14 +44,12 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
         public static void UpdateProduct()
         {
             try
             {
                 Console.WriteLine("Enter Product ID:");
                 int id = int.Parse(Console.ReadLine()!);
-
 
                 Console.WriteLine("Enter product  name:");
                 string fullname = Console.ReadLine()!;
@@ -69,18 +67,13 @@ namespace MarketApp.Services.Concrete
 
                 Console.WriteLine("Enter Product Amount:");
                 int amount = int.Parse(Console.ReadLine()!);
-
                 int idupd = marketService.UpdateProduct(id, fullname, productPrice, category, amount);
-
                 Console.WriteLine($"Product with ID:{idupd} was updated!");
             }
-
             catch (Exception ex)
-
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
-
         }
         public static void DeleteProduct()
         {
@@ -88,16 +81,24 @@ namespace MarketApp.Services.Concrete
             {
                 Console.WriteLine("Enter Product ID you want to delete:");
                 int id = int.Parse(Console.ReadLine()!);
-
                 int a = marketService.DeleteProduct(id);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
-
         }
-        
+
+        public static void ShowProducts()
+        {
+            var table = new ConsoleTable("id", "Name", "price Per Product ", "Category", "Amount");
+
+            foreach (var product in marketService.GetProducts())
+            {
+                table.AddRow(product.Id, product.Name, product.PricePerProduct, product.Category, product.Amount);
+            }
+            table.Write();
+        }
         public static void ShowProductByCategory()
         {
             try
@@ -111,7 +112,6 @@ namespace MarketApp.Services.Concrete
                 Categories category = (Categories)Enum.Parse(typeof(Categories), a);
 
                 var table = new ConsoleTable("Category","ID","Name","pricePerProducts","Amounts");
-
                 foreach (var product in marketService.ShowProductByCategory(category)) 
                 {
                     table.AddRow(product.Category,product.Id,product.Name,product.PricePerProduct,product.Amount);
@@ -125,12 +125,33 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+        public static void ShowProductByName()
+        {
+            try
+            {
+                string str = Console.ReadLine()!;
+
+                var table = new ConsoleTable("Name", "ID", "price Per Product ", "Category", "Amount");
+
+                foreach (var product in marketService.ShowProductByName(str))
+                {
+                    table.AddRow(product.Id, product.Name, product.PricePerProduct, product.Category, product.Amount);
+                }
+
+                table.Write();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
         public static void ShowProductByPrice()
         {
             try
             {
                 Console.WriteLine("Enter Product minimal Price:");
                 decimal minPrice = decimal.Parse(Console.ReadLine()!);
+
                 Console.WriteLine("Enter Product maximal Price:");
                 decimal maxPrice = decimal.Parse(Console.ReadLine()!);
 
@@ -141,56 +162,58 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-        public static void ShowProductByName()
-        {
-            try
-            {
-                string str = Console.ReadLine()!;
-                var table = new ConsoleTable("Name","ID", "price Per Product ", "Category", "Amount");
+      
 
-                foreach (var product in marketService.ShowProductByName(str))
-                {
-                    table.AddRow( product.Id,product.Name, product.PricePerProduct, product.Category, product.Amount);
-                }
-
-                table.Write();
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
-
-     
-
-            public static void ShowProducts()
-        {
-            var table = new ConsoleTable("id", "Name","price Per Product ","Category","Amount");
-
-            foreach (var product in marketService.GetProducts())
-            {
-                table.AddRow(product.Id,product.Name,product.PricePerProduct,product.Category,product.Amount);
-            }
-            table.Write();
-        }
+         
         public static void AddSales()
         {
             try
             {
                 Console.WriteLine("Enter  sale's date yyyy/MM/dd:");
                 var date = DateTime.ParseExact(Console.ReadLine()!, "yyyy/MM/dd", null);
-                int a = marketService.AddSales(date); 
-               
-
+                int a = marketService.AddSales(date);             
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+        public static void DeleteSale()
+        {
+            try
+            {
+                Console.WriteLine("Enter Sale ID you want to delete:");
+                int id = int.Parse(Console.ReadLine()!);
 
+                marketService.DeleteSale(id);
+                Console.WriteLine($"Sale with ID {id} deleted ");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+        public static void ReturnProductFromSale()
+        {
+            try
+            {
+                Console.WriteLine("Enter Sale ID  ");
+                int id = int.Parse(Console.ReadLine()!);
+
+                Console.WriteLine("Enter Produc ID  ");
+                int prodid = int.Parse(Console.ReadLine()!);
+
+                Console.WriteLine("Enter  Amount of products ");
+                int prodamount = int.Parse(Console.ReadLine()!);
+
+                int a = marketService.ReturnProductFromSale(id, prodid, prodamount);
+                Console.WriteLine($"The Needed products with ID{a} retured from sale with ID {id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
         public static void ShowSales()
         {
             var table = new ConsoleTable("id","Payment","Date");
@@ -202,15 +225,12 @@ namespace MarketApp.Services.Concrete
 
             table.Write();
         }
-
         public static void ShowSaleById ()
         {
-
             try
             {
                 Console.WriteLine("Enter Sale ID to show salesitems ");
                 int id = int.Parse(Console.ReadLine()!);
-
 
                 var a = marketService.GetSaleById(id, out List<Sales> sale);
 
@@ -223,7 +243,6 @@ namespace MarketApp.Services.Concrete
                 table1.Write();
                 Console.WriteLine("=================================================");
 
-
                 Console.WriteLine("Show Sale Items :");
 
                 var table2 = new ConsoleTable("id", "ProdName", "Count");
@@ -232,42 +251,57 @@ namespace MarketApp.Services.Concrete
                 {
                     table2.AddRow(saleitem.Id, saleitem.Product.Name, saleitem.Count);
                 }
-
                 table2.Write();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
-
         }
-
-        public static void ReturnProductFromSale()
+        public static void ShowAmongPaymentSales()
         {
             try
             {
-                Console.WriteLine("Enter Sale ID  ");
-                int id = int.Parse(Console.ReadLine()!);
+                Console.WriteLine("Enter Sales minimal Payment:");
+                decimal minPrice = decimal.Parse(Console.ReadLine()!);
 
-                Console.WriteLine("Enter Produc ID  ");
-                int prodid = int.Parse(Console.ReadLine()!);
+                Console.WriteLine("Enter Sales maximal Payment");
+                decimal maxPrice = decimal.Parse(Console.ReadLine()!);
 
-                Console.WriteLine("Enter Produc ID  ");
-                int prodamount = int.Parse(Console.ReadLine()!);
-
-                marketService.ReturnProductFromSale(id, prodid, prodamount);
+                marketService.GetByPaymentSales(minPrice, maxPrice);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
+        }
+        public static void  ShowBetweeMinDateandMaxDate()
+        {
+            try
+            {
+                Console.WriteLine("Enter minimum sale date yyyy/MM/dd");
+                var minDate = DateTime.ParseExact(Console.ReadLine()!, "yyyy/MM/dd", null);
 
+                Console.WriteLine("Enter maximum date yyyy/MM/dd:");
+                var maxDate = DateTime.ParseExact(Console.ReadLine()!, "yyyy/MM/dd", null);
+                var a = marketService.GetBetweenDateOfSales(minDate, maxDate);
 
+                var table1 = new ConsoleTable("Date", "Payment", "ID");
+                foreach (var sales in a)
+                {
+                    table1.AddRow(sales.Date,sales.Payment,sales.Id);
+                }
 
-
-
+                table1.Write();
+                Console.WriteLine("=================================================");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            } 
 
         }
+
 
     }
 

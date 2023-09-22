@@ -123,11 +123,12 @@ namespace MarketApp.Services.Concrete
         public int AddSales(DateTime date)
         {
             int selectedOption;
-            
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+
             Sales sale = new Sales
             {
                 
-                Date = date,
+                Date = date + currentTime
             };
 
 
@@ -162,10 +163,13 @@ namespace MarketApp.Services.Concrete
                         break;
                     case 2:
                       
-                        if (sale.SalesItems.Count == 0)
-                        {
-                            
+                        if (sale.SalesItems.Count == 0 )
+                        {                           
                             throw new Exception("You could not create empty sale");
+                        }
+                        if (sales.Any(x=>x.Id==sale.Id)==true)
+                        {
+                                throw new Exception("You have already created sale with this ID");
                         }
                         for (int i = 0; i < sale.SalesItems.Count; i++)
                         {
@@ -194,7 +198,7 @@ namespace MarketApp.Services.Concrete
         }
         public int ReturnProductFromSale(int saleid,int productid, int prodamount)
         { 
-             if (string.IsNullOrEmpty(saleid.ToString()))       
+            if (string.IsNullOrEmpty(saleid.ToString()))       
                 throw new Exception("The Sale Id field is empty");        
             if (saleid < 0)
                 throw new Exception("Id can't be less than 0!");   
@@ -205,18 +209,26 @@ namespace MarketApp.Services.Concrete
                 throw new Exception("The Product Id field is empty");
             if (productid < 0)
                 throw new Exception("Id can't be less than 0!");
+            if (saleexist.SalesItems.FirstOrDefault(x=>x.Product.Id==productid) is null)
+                throw new Exception($"There are no SaleItem witch contain product with ID {productid} ");
+            if (prodamount>saleexist.SalesItems.FirstOrDefault(x=>x.Product.Id==productid).Count )
+                throw new Exception($"The product count is too high , enter count which is less than {saleexist.SalesItems.FirstOrDefault(x => x.Product.Id == productid).Count} ");
 
+            var salewithneededid=sales.FirstOrDefault(x=>x.Id==saleid);
+            var saleitemid = salewithneededid.SalesItems.FirstOrDefault(x=>x.Product.Id == productid);
 
-            var productamountadd = products.FirstOrDefault(x => x.Id == productid).Amount; 
-            var productexist =saleexist.SalesItems.FirstOrDefault(x => x.Product.Id==productid);
-            var productexistcount = productexist.Count;
-            productexistcount = productexistcount - prodamount;
-            productamountadd = productamountadd + prodamount;
-            if (productexistcount == 0)
+            saleitemid.Count = saleitemid.Count - prodamount;
+            products.FirstOrDefault(x => x.Id == productid).Amount = products.FirstOrDefault(x => x.Id == productid).Amount + prodamount;
+            if(saleitemid.Count ==0)
             {
-                saleexist.SalesItems.Remove(productexist);
+                salewithneededid.SalesItems.Remove(saleitemid);
+                return productid;
             }
-            return 0;
+            else
+            {
+                return productid;
+            }
+            
         }
         public int DeleteSale(int saleid)
         {
@@ -226,32 +238,45 @@ namespace MarketApp.Services.Concrete
             }
             if (saleid < 0)
                 throw new Exception("Id can't be less than 0!");
-            var saleexist = sales.FirstOrDefault(x => x.Id == saleid);
-            if (saleexist is null)
+            var salecheck = sales.FirstOrDefault(x => x.Id == saleid);
+            if (salecheck is null)
                 throw new Exception($"Sale with ID:{saleid} was not found!");
-            for (int i = 0;i <saleexist.SalesItems.Count;i++)
-            {
-                products.FirstOrDefault(x => x.Id == i).Amount += saleexist.SalesItems[i].Count;
-                products.Add(saleexist.SalesItems[i].Product);               
-            }
-            sales.Remove(saleexist);
+
+            var saleexist=sales.FirstOrDefault(x => x.Id == saleid);
+
+
+            products.ForEach(products => { products.Amount = products.Amount + saleexist.SalesItems.FirstOrDefault(x => x.Product.Id == products.Id).Count; });
+           
+            sales.Remove(saleexist); 
 
             return saleid;
         }
-        public int GetBetweenDateOfSales(DateOnly startDate, DateOnly endDate)
-        {
-            return 0;
-        }
+      
         public int GetByDateSales(DateOnly date)
         {
             return 0;
         }
-        public int GetByPaymentSales(decimal payment)
-        { 
-            return 0;
+        public List<Sales> GetByPaymentSales(decimal minprice, decimal maxprice)
+        {
+            if (minprice > maxprice)
+                throw new Exception($"Minimal price cannot be more than max price");
+
+
+            var saleprice = sales.Where(x => x.Payment >= minprice && x.Payment <= maxprice);
+
+            return saleprice.ToList();
         }
-        
-     
+
+        public List<Sales> GetBetweenDateOfSales(DateTime startDate, DateTime endDate)
+        {
+            if (startDate > endDate)
+                throw new Exception("Mindate cannot me more than Maxdate");
+            var salesdates=sales.Where(x=>x.Date >= startDate && x.Date <= endDate).ToList(); 
+            
+            return salesdates;
+        }
+
+
 
         public List<SalesItem> GetSaleById(int id,out List<Sales> saless)
         {
@@ -321,9 +346,9 @@ namespace MarketApp.Services.Concrete
             };
             salesItemout = saleitem;
             return saleitem.Id;
-
         }
     }
+
 
 
 }

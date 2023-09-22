@@ -19,8 +19,9 @@ namespace MarketApp.Helpers
                 Console.WriteLine("2.Update Product");
                 Console.WriteLine("3.Delete product ");
                 Console.WriteLine("4.Show Products");
-                Console.WriteLine("5.Show products by caegory");
-                Console.WriteLine("5.Show products by name");
+                Console.WriteLine("5.Show products by category");
+                Console.WriteLine("6.Show products by name");
+                Console.WriteLine("7.Show products by price");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -69,10 +70,12 @@ namespace MarketApp.Helpers
 
             do
             {
-                Console.WriteLine("1.Add Sale Item ");
-                Console.WriteLine("2.ShowSales ");
-                Console.WriteLine("3.ShowSales by Id ");
+                Console.WriteLine("1.Add Sale ");
+                Console.WriteLine("2.Delete Whole Sale");
                 Console.WriteLine("3.Return Product From Sale");
+                Console.WriteLine("4.ShowSales ");
+                Console.WriteLine("5.ShowSales by Id ");
+                Console.WriteLine("6.Show Sales Betwee Dates");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -82,21 +85,31 @@ namespace MarketApp.Helpers
                 {
                     Console.WriteLine("Please enter valid option:");
                 }
-
+              
                 switch (selectedOption)
                 {
                     case 1:
                         MenuService.AddSales();
                         break;
                     case 2:
-                        MenuService.ShowSales();
-                        break;
+                        MenuService.DeleteSale();
+                       break;
                     case 3:
-                        MenuService.ShowSaleById();
-                        break;
-                    case 4:
                         MenuService.ReturnProductFromSale();
                         break;
+                    case 4:
+                         MenuService.ShowSales();
+                        break;
+                    case 5:
+                        MenuService.ShowSaleById();
+                        break;
+                    case 6:
+                        MenuService.ShowBetweeMinDateandMaxDate();
+                        break;
+                    case 7:
+
+                        break;
+                        
                     case 0:
                         break;
                     default:
