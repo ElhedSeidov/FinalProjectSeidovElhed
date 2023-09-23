@@ -1,9 +1,5 @@
 ﻿using MarketApp.Services.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MarketApp.Helpers
 {
@@ -21,7 +17,7 @@ namespace MarketApp.Helpers
                 Console.WriteLine("4.Show Products");
                 Console.WriteLine("5.Show products by category");
                 Console.WriteLine("6.Show products by name");
-                Console.WriteLine("7.Show products by price");
+                Console.WriteLine("7.Show products by price Range");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");
@@ -66,17 +62,16 @@ namespace MarketApp.Helpers
         public static void DisplaySalesMenu()
         {
             int selectedOption;
-
             do
             {
                 Console.WriteLine("1.Add Sale ");
                 Console.WriteLine("2.Delete Whole Sale");
                 Console.WriteLine("3.Return Product From Sale");
                 Console.WriteLine("4.ShowSales ");
-                Console.WriteLine("5.ShowSales by Id ");
-                Console.WriteLine("6.Show Sale by Date");
-                Console.WriteLine("7.Show sale between Dates");
-                Console.WriteLine("8.Show Sales between Minimal Payment and Maximal");
+                Console.WriteLine("5.ShowSales by specific Id ");
+                Console.WriteLine("6.Show Sale by specific Date");
+                Console.WriteLine("7.Show sale between minimum and maximum  Dates");
+                Console.WriteLine("8.Show Sales between Minimal Payment and Maximal Payment");
 
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("----------------------------");

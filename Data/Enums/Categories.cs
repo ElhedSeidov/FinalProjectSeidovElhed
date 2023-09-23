@@ -1,5 +1,4 @@
-﻿
-namespace MarketApp.Data.Enums
+﻿namespace MarketApp.Data.Enums
 {
     public enum Categories
     {

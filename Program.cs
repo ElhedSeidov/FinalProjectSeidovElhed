@@ -7,7 +7,6 @@ namespace MarketApp
         public static void Main(string[] args)
         {
             int selectedOption;
-
             Console.WriteLine("Welcome to Market!");
 
             do
@@ -22,7 +21,6 @@ namespace MarketApp
                 {
                     Console.WriteLine("Please enter valid option:");
                 }
-
                 switch (selectedOption)
                 {
                     case 1:

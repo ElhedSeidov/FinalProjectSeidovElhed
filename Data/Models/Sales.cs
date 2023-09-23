@@ -1,10 +1,5 @@
 ﻿using MarketApp.Data.Common;
-using MarketApp.Data.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MarketApp.Data.Models
 {
@@ -15,15 +10,9 @@ namespace MarketApp.Data.Models
         {
             Id = id;
             id++;
-
-        }
-
-        
-        public decimal Payment { get; set; }
-        
+        }    
+        public decimal Payment { get; set; }      
         public List<SalesItem> SalesItems { get; set; } = new();
         public DateTime Date { get; set; }
-
-
     }
 }

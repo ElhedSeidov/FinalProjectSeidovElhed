@@ -1,6 +1,4 @@
-﻿
-
-namespace MarketApp.Data.Common
+﻿namespace MarketApp.Data.Common
 {
     public abstract class BaseModel
     {

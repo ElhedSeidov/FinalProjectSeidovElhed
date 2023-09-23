@@ -11,12 +11,9 @@ namespace MarketApp.Data.Models
             Id = id;
             id++;
         }
-
-
         public string Name { get; set; } = null!;
         public decimal PricePerProduct { get; set; }
         public Categories Category { get; set; }
         public int Amount { get; set; }
-
     }
 }

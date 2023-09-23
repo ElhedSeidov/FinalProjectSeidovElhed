@@ -2,12 +2,7 @@
 using MarketApp.Data.Enums;
 using MarketApp.Data.Models;
 using MarketApp.Services.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MarketApp.Services.Concrete
 {
@@ -24,7 +19,7 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine("Enter Product Category:");
                 string a = Console.ReadLine()!;
 
-                if (int.TryParse(a, out _))
+                if (int.TryParse(a, out _))//this is for preventing entering numbers
                 {
                     throw new Exception("Enter Right Value");
                 }
@@ -88,7 +83,6 @@ namespace MarketApp.Services.Concrete
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
         public static void ShowProducts()
         {
             var table = new ConsoleTable("id", "Name", "price Per Product ", "Category", "Amount");
@@ -105,7 +99,7 @@ namespace MarketApp.Services.Concrete
             {
                 Console.WriteLine("Enter Product Category:");
                 string a = Console.ReadLine()!;
-                if (int.TryParse(a, out _))
+                if (int.TryParse(a, out _))//this exception added here for preventing entering numbers 
                 {
                     throw new Exception("Enter Right Value");
                 }
@@ -118,7 +112,6 @@ namespace MarketApp.Services.Concrete
                 }
 
                 table.Write();
-
             }
             catch (Exception ex)
             {
@@ -230,7 +223,7 @@ namespace MarketApp.Services.Concrete
 
             table.Write();
         }
-        public static void ShowSaleById()
+        public static void ShowSaleById()//this method shows two tables one table of sale with chosen id the second one is table with saleitems of this id
         {
             try
             {
@@ -250,7 +243,7 @@ namespace MarketApp.Services.Concrete
 
                 Console.WriteLine("Show Sale Items :");
 
-                var table2 = new ConsoleTable("id", "ProdName", "Count");
+                var table2 = new ConsoleTable("id", "Product Name", "Count");
 
                 foreach (var saleitem in a)
                 {
